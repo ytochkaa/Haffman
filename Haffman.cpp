@@ -27,6 +27,6 @@ struct MyCompare {
 
 
 int main(){
-
+int x;
     return 0;
 }
