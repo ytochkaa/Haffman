@@ -1,8 +1,12 @@
 #include <iostream>
+#include <vector>
+#include <map>
 
 
 using namespace std;
 
+vector<bool> bitcode;
+map<char, vector<bool>> mappingtable;
 
 class Node{
 public:
@@ -25,8 +29,25 @@ struct MyCompare {
     }
 };
 
+void Table(Node *root) {
+    if (root->left != NULL){
+        bitcode.push_back(0);
+        Table(root->left);
+    }
+
+    if (root->right != NULL){
+        bitcode.push_back(1);
+        Table(root->right);
+    }
+
+    if (root->left == NULL && root->right == NULL)
+        mappingtable[root->c] = bitcode;
+
+    bitcode.pop_back();
+}
+
 
 int main(){
-int x;
+
     return 0;
 }
