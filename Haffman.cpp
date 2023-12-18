@@ -71,7 +71,38 @@ void CreateEncodedFile() {
     encodedFile.close();
 }
 
+void CreateDecodedFile(Node* root) {
+    ifstream encodedFile("encoded.txt", ios::binary);
+    ofstream decodedFile("decoded.txt", ios::binary);
 
+    Node *p = root;
+    int count = 0;
+    char byte;
+    byte = encodedFile.get();
+    while (!encodedFile.eof()) {
+        bool b = byte & (1 << (7 - count));
+        if (b) {
+            p = p->right;
+        } else {
+            p = p->left;
+        }
+
+        if (p->left == nullptr && p->right == nullptr) {
+            if (p != nullptr && p->left == nullptr && p->right == nullptr) {
+                decodedFile << p->c;
+                p = root;
+            }
+        }
+        count++;
+        if (count == 8) {
+            count = 0;
+            byte = encodedFile.get();
+        }
+    }
+
+    encodedFile.close();
+    decodedFile.close();
+}
 
 int main(int argc, char *argv[]){
     ifstream f("text.txt", ios::binary);
@@ -106,6 +137,7 @@ int main(int argc, char *argv[]){
 
     Table(root);
     CreateEncodedFile();
+    CreateDecodedFile(root);
 
     return 0;
 }
